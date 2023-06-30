@@ -9,6 +9,7 @@
         <div class="card custom-shadow">
             <div id="form-wrapper" class="card-body">
                 <form id="form" action="" method="POST">
+                    {% csrf_token %}
                     <div id="user-info">
                         <div class="form-field">
                             <input type="text" class="form-control" name="name" placeholder="Name">
@@ -89,9 +90,10 @@
     var shipping = '{{order.shipping}}';
     var total = '{{order.get_cart_total}}';
 
-    if(shipping == 'False') {
+    {% comment %} if(shipping == 'False') {
+        console.log("Shipping is False")
         document.getElementById("shipping-info").innerHTML = '';
-    }
+    } {% endcomment %}
 
     var formId = document.getElementById('form');
 
@@ -161,6 +163,10 @@
         .then((data) => {
             console.log('Success:', data);
             alert("Transaction complete");
+
+            cart = {};
+            document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
+
             window.location.href = "{% url 'store' %}"
         })
     }

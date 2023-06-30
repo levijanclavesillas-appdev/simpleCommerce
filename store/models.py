@@ -77,10 +77,10 @@ class OrderItem(models.Model):
 class ShippingAddress(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
-    address = models.CharField(max_length=300, null=False)
-    city = models.CharField(max_length=300, null=False)
-    state = models.CharField(max_length=300, null=False)
-    zipcode = models.CharField(max_length=300, null=False)
+    address = models.CharField(max_length=300, null=True)
+    city = models.CharField(max_length=300, null=True)
+    state = models.CharField(max_length=300, null=True)
+    zipcode = models.CharField(max_length=300, null=True)
 
     date_added = models.DateTimeField(auto_now_add=True)
 
