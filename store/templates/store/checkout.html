@@ -1,0 +1,113 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="row">
+    <!-- ----------------left----------------- -->
+    <div class="col-sm-6 mb-3 mb-sm-0">
+        <div class="card custom-shadow">
+            <div class="card-body">
+                <form id="form" action="" method="POST">
+                    <div id="user-info">
+                        <div class="form-field">
+                            <input type="text" class="form-control" placeholder="Name">
+                        </div>
+                        <div class="form-field">
+                            <input type="email" class="form-control" placeholder="Email">
+                        </div>
+                    </div>
+
+                    
+                    <div id="shipping-info">
+                        <hr>
+                        <h3>Shipping Information:</h3>
+                        <hr>
+                        <div class="form-field">
+                            <input type="text" class="form-control" placeholder="Address">
+                        </div>
+                        <div class="form-field">
+                            <input type="text" class="form-control" placeholder="City">
+                        </div>
+                        <div class="form-field">
+                            <input type="text" class="form-control" placeholder="State">
+                        </div>
+                        <div class="form-field">
+                            <input type="text" class="form-control" placeholder="Zipcode">
+                        </div>
+                    </div>
+                    <br>
+                    <input type="submit" id="form-btn" class="btn btn-outline-success" value="Continue"></input>
+                </form>
+            </div>
+        </div>
+
+        <br>
+        <div class="card custom-shadow">
+            <div id="payment-info" class="card-body hidden">
+                <p>Payment options</p>
+                <button id="make-payment">Make Payment</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ----------------right----------------- -->
+    <div class="col-sm-6">
+        <div class="card border-0 custom-shadow">
+            <div class="card-body">
+                <a href="{% url 'cart' %}" class="btn btn-outline-secondary"><img
+                        src="{% static 'images/arrow-left.svg' %}" /> Back to cart</a>
+                <hr>
+                <h2>Order summary</h2>
+                <hr>
+
+                <table class="table table-borderless">
+
+                    <tbody>
+                        {% for item in items %}
+                        <tr>
+                            <th scope="row"><img src="{{item.product.imageURL}}" alt="..." height="70" /></th>
+                            <td></td>
+                            <td>{{item.product.name}}</td>
+                            <td>${{item.product.price|floatformat:2}}</td>
+                            <td>x{{item.quantity}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <hr>
+                <div><strong>Items: {{order.get_cart_items}}</strong></div>
+                <div><strong>Total: ${{order.get_cart_total|floatformat:2}}</strong></div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var shipping = '{{order.shipping}}';
+
+    if(shipping == 'False') {
+        document.getElementById("shipping-info").innerHTML = '';
+    }
+
+    var formId = document.getElementById('form');
+
+    formId.addEventListener('submit', (e) => {
+        e.preventDefault();
+        console.log("Form Submitted...");
+        document.getElementById('form-btn').classList.add('hidden');
+        document.getElementById('payment-info').classList.remove('hidden');
+    })
+
+    document.getElementById('make-payment').addEventListener('click', function(e) {
+        submitFormData();
+    })
+
+    function submitFormData() {
+        console.log("Payment button clicked");
+    }
+</script>
+
+{% endblock content %}

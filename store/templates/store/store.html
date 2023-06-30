@@ -1,0 +1,26 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+
+    {% for product in products %}
+    <div class="col">
+        <div class="card border-0 custom-shadow">
+            <img src="{{product.imageURL}}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">{{product.name}}</h5>
+            </div>
+            <div class="footer p-2">
+                <button data-product={{product.id}} data-action="add" class="btn btn-outline-secondary update-cart">Add to cart</button>
+                <a href="" class="btn btn-outline-secondary">View</a>
+                <strong>${{product.price|floatformat:2}}</strong>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    
+</div>
+
+{% endblock content %}
