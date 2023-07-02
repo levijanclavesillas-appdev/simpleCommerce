@@ -1,9 +1,15 @@
-from django.shortcuts import render, redirect
-from django.http import JsonResponse
+from django.shortcuts import render
+from django.http import JsonResponse, HttpResponseRedirect
 import json
 import datetime
+import random
 
-from .utils import cookieCart
+import stripe
+from django.conf import settings
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+from .utils import cookieCart, product_sales_pipeline
 from .models import *
 
 
@@ -38,12 +44,27 @@ def checkout(request):
         items = order.orderitem_set.all()
     else:
         cookieData = cookieCart(request)
-        cartItems = cookieData['cartItems']
         order = cookieData['order']
         items = cookieData['items']
 
+    if request.POST.get('make-payment-btn') == 'make-payment-btn':
+        if request.user.is_authenticated:
+            customer = request.user.customer
+            order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        else:
+            cookieData = cookieCart(request)
+            order = cookieData['order']
+        if request.user.is_authenticated:
+            stripe_url = product_sales_pipeline(order.id, 10000)
+        else:
+            stripe_url = product_sales_pipeline(random.random(), 20000)
+        return HttpResponseRedirect(stripe_url)
+        
     context = {'items': items, 'order': order}
     return render(request, 'store/checkout.html', context)
+
+def cancelled(request):
+    return render(request, 'store/cancelled.html')
 
 def updateItem(request):
     data = json.loads(request.body)
@@ -78,8 +99,6 @@ def processOrder(request):
 
     
     else:
-        print("Not logged in...")
-        print('COOKIES:', request.COOKIES)
 
         name = data['form']['name']
         email = data['form']['email']

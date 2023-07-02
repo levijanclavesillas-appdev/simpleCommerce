@@ -12,7 +12,7 @@ class Customer(models.Model):
     
 class Product(models.Model):
     name = models.CharField(max_length=300, null=True, blank=True)
-    price = models.FloatField()
+    price = models.IntegerField()
     digital = models.BooleanField(default=False, null=True, blank=True)
     image = models.ImageField(null=True, blank=True)
 

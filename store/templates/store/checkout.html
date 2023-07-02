@@ -47,7 +47,10 @@
         <div class="card custom-shadow">
             <div id="payment-info" class="card-body hidden">
                 <p>Payment options</p>
-                <button id="make-payment">Make Payment</button>
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <button type="submit" name="make-payment-btn" id="make-payment" value="make-payment-btn">Make Payment</button>
+                </form>
             </div>
         </div>
     </div>
@@ -70,7 +73,7 @@
                             <th scope="row"><img src="{{item.product.imageURL}}" alt="..." height="70" /></th>
                             <td></td>
                             <td>{{item.product.name}}</td>
-                            <td>${{item.product.price|floatformat:2}}</td>
+                            <td><img src="{% static 'images/rupee.svg' %}" /> {{item.product.price|floatformat:2}}</td>
                             <td>x{{item.quantity}}</td>
                         </tr>
                         {% endfor %}
@@ -79,7 +82,7 @@
 
                 <hr>
                 <div><strong>Items: {{order.get_cart_items}}</strong></div>
-                <div><strong>Total: ${{order.get_cart_total|floatformat:2}}</strong></div>
+                <div><strong>Total: <img src="{% static 'images/rupee.svg' %}" /> {{order.get_cart_total|floatformat:2}}</strong></div>
 
             </div>
         </div>
@@ -162,12 +165,12 @@
         })
         .then((data) => {
             console.log('Success:', data);
-            alert("Transaction complete");
+            // alert("Transaction complete");
 
             cart = {};
             document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
 
-            window.location.href = "{% url 'store' %}"
+            // window.location.href = "{% url 'store' %}"
         })
     }
 </script>
