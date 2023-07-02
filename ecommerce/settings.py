@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'corsheaders',
 
     'store.apps.StoreConfig',
+    'loginsys.apps.LoginsysConfig',
 ]
 
 MIDDLEWARE = [
