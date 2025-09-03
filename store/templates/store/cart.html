@@ -12,7 +12,7 @@
                 <strong>Items: {{order.get_cart_items}}</strong>
             </div>
             <div>
-                <strong>Total: <img src="{% static 'images/rupee.svg' %}" />{{order.get_cart_total|floatformat:2}}</strong>
+                <strong>Total: <img src="SGD {% static 'images/rupee.svg' %}" />{{order.get_cart_total|floatformat:2}}</strong>
             </div>
             <div>
                 <a href="{% url 'checkout' %}" class="btn btn-success">Checkout</a> 
@@ -45,7 +45,7 @@
                 <th scope="row"><img src="{{item.product.imageURL}}" alt="..." height="70"/></th>
                 <td></td>
                 <td>{{item.product.name}}</td>
-                <td><img src="{% static 'images/rupee.svg' %}" /> {{item.product.price|floatformat:2}}</td>
+                <td><img src="SGD{% static 'images/rupee.svg' %}" /> {{item.product.price|floatformat:2}}</td>
                 <td>
                     <p class="quantity">{{item.quantity}}</p>
                     <div class="quantity">
@@ -53,7 +53,7 @@
                         <img data-product={{item.product.id}} data-action="remove" class="update-cart" src="{% static 'images/caret-down-fill.svg' %}" alt="..."/>
                     </div>
                     </td>
-                <td><img src="{% static 'images/rupee.svg' %}" /> {{item.get_total}}</td>
+                <td><img src="SGD {% static 'images/rupee.svg' %}" /> {{item.get_total}}</td>
               </tr>
               {% endfor %}
             </tbody>
