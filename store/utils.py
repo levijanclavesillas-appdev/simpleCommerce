@@ -53,7 +53,7 @@ def product_sales_pipeline(product_name, product_price):
         unit_amount = product_price,
         currency = 'sgd'
     )
-    base_endpoint = 'http://http://157.230.240.163:8000'
+    base_endpoint = 'http://157.230.240.163:8000'
     success_url = f"{base_endpoint}/"
     cancel_url = f"{base_endpoint}/payments/cancelled/"
 
