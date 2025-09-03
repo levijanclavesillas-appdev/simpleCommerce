@@ -73,7 +73,7 @@
                             <th scope="row"><img src="{{item.product.imageURL}}" alt="..." height="70" /></th>
                             <td></td>
                             <td>{{item.product.name}}</td>
-                            <td>SGD<img src="{% static 'images/rupee.svg' %}" /> {{item.product.price|floatformat:2}}</td>
+                            <td>SGD {{item.product.price|floatformat:2}}</td>
                             <td>x{{item.quantity}}</td>
                         </tr>
                         {% endfor %}
@@ -82,7 +82,7 @@
 
                 <hr>
                 <div><strong>Items: {{order.get_cart_items}}</strong></div>
-                <div><strong>Total:SGD <img src=" {% static 'images/rupee.svg' %}" /> {{order.get_cart_total|floatformat:2}}</strong></div>
+                <div><strong>Total:SGD {{order.get_cart_total|floatformat:2}}</strong></div>
 
             </div>
         </div>
