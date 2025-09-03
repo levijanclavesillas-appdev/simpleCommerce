@@ -51,9 +51,9 @@ def product_sales_pipeline(product_name, product_price):
     stripe_price_obj = stripe.Price.create(
         product = stripe_product_id,
         unit_amount = product_price,
-        currency = 'inr'
+        currency = 'sgd'
     )
-    base_endpoint = 'https://micro-ecom-web.onrender.com'
+    base_endpoint = 'http://http://157.230.240.163:8000'
     success_url = f"{base_endpoint}/"
     cancel_url = f"{base_endpoint}/payments/cancelled/"
 
