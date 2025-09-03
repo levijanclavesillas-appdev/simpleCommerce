@@ -55,9 +55,13 @@ def checkout(request):
             cookieData = cookieCart(request)
             order = cookieData['order']
         if request.user.is_authenticated:
-            stripe_url = product_sales_pipeline(order.id, 10000)
+            stripe_url = product_sales_pipeline(f"Order-{order.id}", int(order.get_cart_total * 100))
         else:
-            stripe_url = product_sales_pipeline(random.random(), 20000)
+            stripe_url = product_sales_pipeline(f"GuestOrder-{random.randint(1000,9999)}", int(order['get_cart_total'] * 100))    
+        # if request.user.is_authenticated:
+        #     stripe_url = product_sales_pipeline(order.id, 10000)        
+        # else:
+        #     stripe_url = product_sales_pipeline(random.random(), 20000)
         return HttpResponseRedirect(stripe_url)
         
     context = {'items': items, 'order': order}

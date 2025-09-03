@@ -51,7 +51,7 @@ def product_sales_pipeline(product_name, product_price):
     stripe_price_obj = stripe.Price.create(
         product = stripe_product_id,
         unit_amount = product_price,
-        currency = 'inr'
+        currency = 'sgd'
     )
     base_endpoint = 'http://157.230.240.163:8000'
     success_url = f"{base_endpoint}/"
