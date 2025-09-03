@@ -12,7 +12,7 @@
                 <strong>Items: {{order.get_cart_items}}</strong>
             </div>
             <div>
-                <strong>Total: SGD <img src="{% static 'images/rupee.svg' %}" />{{order.get_cart_total|floatformat:2}}</strong>
+                <strong>Total: SGD{{order.get_cart_total|floatformat:2}}</strong>
             </div>
             <div>
                 <a href="{% url 'checkout' %}" class="btn btn-success">Checkout</a> 
