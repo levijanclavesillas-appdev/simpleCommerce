@@ -3,6 +3,121 @@
 
 {% block content %}
 
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+  {% for product in products %}
+  <div class="group relative bg-white rounded-2xl shadow-sm hover:shadow-lg transition p-4">
+
+    <!-- Product Image -->
+    <div class="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-xl bg-gray-100">
+      <img src="{{ product.imageURL }}" alt="{{ product.name }}"
+        class="h-full w-full object-cover object-center group-hover:scale-105 transition-transform duration-300">
+    </div>
+
+    <!-- Product Info -->
+    <div class="mt-4 flex justify-between items-start">
+      <h3 class="text-lg font-medium text-gray-900">
+        {{ product.name }}
+      </h3>
+      <p class="text-md font-semibold text-gray-700">
+        SGD {{ product.price|floatformat:2 }}
+      </p>
+    </div>
+
+    <!-- Actions -->
+    <div class="mt-4 flex items-center gap-2">
+      <button data-product="{{ product.id }}" data-action="add"
+        class="update-cart flex-1 rounded-xl border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 transition">
+        Add to Cart
+      </button>
+      <!-- Trigger Drawer -->
+      <button data-drawer-target="drawer-{{ product.id }}" data-drawer-toggle="drawer-{{ product.id }}"
+        class="flex-1 rounded-xl border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 transition">
+        View
+      </button>
+    </div>
+  </div>
+
+  <!-- Drawer -->
+  <div id="drawer-{{ product.id }}" class="fixed inset-0 z-50 hidden">
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-black/50" data-drawer-hide="drawer-{{ product.id }}"></div>
+
+    <!-- Drawer Content -->
+    <div
+      class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-xl transform translate-x-full transition-transform duration-300"
+      id="drawer-content-{{ product.id }}">
+      <div class="relative h-full flex flex-col p-6">
+
+        <!-- Close Button -->
+        <button data-drawer-hide="drawer-{{ product.id }}"
+          class="absolute top-3 right-3 text-gray-400 hover:text-gray-600">
+          ✕
+        </button>
+
+        <!-- Content -->
+        <div class="flex flex-col gap-6 overflow-y-auto">
+          <div>
+            <img src="{{ product.imageURL }}" alt="{{ product.name }}" class="rounded-xl w-full object-cover">
+          </div>
+          <div>
+            <h2 class="text-2xl font-semibold text-gray-900">{{ product.name }}</h2>
+            <p class="mt-2 text-gray-600">SGD {{ product.price|floatformat:2 }}</p>
+            <p class="mt-4 text-sm text-gray-500">
+              {{ product.description|default:"No description available." }}
+            </p>
+            <button data-product="{{ product.id }}" data-action="add"
+              class="mt-6 w-full rounded-xl bg-black text-white px-4 py-2 text-sm font-medium hover:bg-gray-800 transition update-cart">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+</div>
+
+<!-- Drawer Script -->
+<script>
+  document.querySelectorAll("[data-drawer-toggle]").forEach(button => {
+    button.addEventListener("click", () => {
+      const targetId = button.dataset.drawerTarget;
+      const drawer = document.getElementById(targetId);
+      const content = drawer.querySelector("#drawer-content-" + targetId.split("-")[1]);
+      drawer.classList.remove("hidden");
+      requestAnimationFrame(() => {
+        content.classList.remove("translate-x-full");
+      });
+    });
+  });
+
+  document.querySelectorAll("[data-drawer-hide]").forEach(button => {
+    button.addEventListener("click", () => {
+      const targetId = button.dataset.drawerHide;
+      const drawer = document.getElementById(targetId);
+      const content = drawer.querySelector("#drawer-content-" + targetId.split("-")[1]);
+      content.classList.add("translate-x-full");
+      setTimeout(() => {
+        drawer.classList.add("hidden");
+      }, 300);
+    });
+  });
+</script>
+
+{% endblock content %}
+
+
+
+
+
+{% comment %} {% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+
 <div class="row row-cols-1 row-cols-md-3 g-4">
 
     {% for product in products %}
@@ -23,4 +138,4 @@
     
 </div>
 
-{% endblock content %}
+{% endblock content %} {% endcomment %}
