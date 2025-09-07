@@ -41,6 +41,9 @@ INSTALLED_APPS = [
 
     'store.apps.StoreConfig',
     'loginsys.apps.LoginsysConfig',
+    'tailwind',
+    # 'theme',  # We'll create this next
+    'django_browser_reload',
 ]
 
 MIDDLEWARE = [
