@@ -1,0 +1,77 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COIN MARKET</title>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <link rel="stylesheet" href="{% static 'css/output.css' %}">
+
+  <!-- Global JS Variables & Functions -->
+  <script>
+    const user = '{{ request.user }}';
+
+    // CSRF token helper
+    function getToken(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+          cookie = cookie.trim();
+          if (cookie.startsWith(name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+    const csrftoken = getToken('csrftoken');
+
+    // Generic cookie getter
+    function getCookie(name) {
+      const cookieArr = document.cookie.split(";");
+      for (let cookie of cookieArr) {
+        const cookiePair = cookie.split("=");
+        if (name === cookiePair[0].trim()) {
+          return decodeURIComponent(cookiePair[1]);
+        }
+      }
+      return null;
+    }
+
+    // Initialize cart
+    let cart = JSON.parse(getCookie('cart'));
+    if (!cart) {
+      cart = {};
+      console.log('Cart created');
+      document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/";
+    }
+    console.log('Cart:', cart);
+  </script>
+
+</head>
+
+<body >
+
+  <!-- Navbar -->
+  <div class="shadow-lg bg-gray-900/80 backdrop-blur-md sticky top-0 z-50">
+    {% include 'navbar.html' %}
+  </div>
+
+  <!-- Main Container -->
+  <div class="container mx-auto my-8 px-6">
+    {% block content %}
+    {% endblock content %}
+  </div>
+
+  <!-- Scripts -->
+  <script src="{% static 'js/cart.js' %}"></script>
+
+</body>
+
+</html>
