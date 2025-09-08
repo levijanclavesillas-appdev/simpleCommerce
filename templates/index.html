@@ -6,22 +6,23 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>COIN MARKET</title>
+
+  <!-- Stylesheets -->
   <link rel="stylesheet" href="{% static 'css/main.css' %}">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-<link href="{% static 'css/output.css' %}" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/output.css' %}">
 
+  <!-- Global JS Variables & Functions -->
   <script>
-    var user = '{{request.user}}'
+    const user = '{{ request.user }}';
 
+    // CSRF token helper
     function getToken(name) {
       let cookieValue = null;
       if (document.cookie && document.cookie !== '') {
         const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-          const cookie = cookies[i].trim();
-          // Does this cookie string begin with the name we want?
-          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        for (let cookie of cookies) {
+          cookie = cookie.trim();
+          if (cookie.startsWith(name + '=')) {
             cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
             break;
           }
@@ -31,53 +32,46 @@
     }
     const csrftoken = getToken('csrftoken');
 
+    // Generic cookie getter
     function getCookie(name) {
-      var cookieArr = document.cookie.split(";");
-
-      for(var i=0; i<cookieArr.length; i++) {
-        var cookiePair = cookieArr[i].split("=");
-
-        if(name == cookiePair[0].trim()) {
+      const cookieArr = document.cookie.split(";");
+      for (let cookie of cookieArr) {
+        const cookiePair = cookie.split("=");
+        if (name === cookiePair[0].trim()) {
           return decodeURIComponent(cookiePair[1]);
         }
       }
-
       return null;
     }
 
-    var cart = JSON.parse(getCookie('cart'))
-
-    if(cart == undefined) {
+    // Initialize cart
+    let cart = JSON.parse(getCookie('cart'));
+    if (!cart) {
       cart = {};
-      console.log('Cart created')
-      document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
+      console.log('Cart created');
+      document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/";
     }
-
-    console.log('Cart:', cart)
+    console.log('Cart:', cart);
   </script>
 
 </head>
 
-<body>
+<body >
 
-  {% include 'navbar.html' %}
-
-  <div class="container my-3">
-
-    {% block content %}
-
-    {% endblock content %}
-
+  <!-- Navbar -->
+  <div class="shadow-lg bg-gray-900/80 backdrop-blur-md sticky top-0 z-50">
+    {% include 'navbar.html' %}
   </div>
 
+  <!-- Main Container -->
+  <div class="container mx-auto my-8 px-6">
+    {% block content %}
+    {% endblock content %}
+  </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-    crossorigin="anonymous"></script>
-
-
-
+  <!-- Scripts -->
   <script src="{% static 'js/cart.js' %}"></script>
+
 </body>
 
 </html>

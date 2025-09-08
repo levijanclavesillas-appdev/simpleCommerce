@@ -1,9 +1,15 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [],
+  content: [
+    './templates/**/*.html',
+    './store/templates/**/*.html',   // your app templates
+    './loginsys/templates/**/*.html',
+    './static/js/**/*.js', 
+  ],
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/line-clamp'), // optional for truncating descriptions
+  ],
 }
-
